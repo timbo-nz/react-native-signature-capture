@@ -103,7 +103,7 @@ public class RSSignatureCaptureViewManager extends ViewGroupManager<RSSignatureC
 	public void setPropsBackgroundColor(RSSignatureCaptureMainView view, @Nullable String color) {
 		Log.d("backgroundColor:",  ""+color);
 		if(view!=null){
-			view.getSignatureView().setBackgroundColor(Color.parseColor(color));
+			view.getSignatureView().setBackgroundColor(Color.TRANSPARENT);
 		}
 	}
 

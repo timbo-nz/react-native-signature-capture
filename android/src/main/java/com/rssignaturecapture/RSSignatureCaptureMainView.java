@@ -172,6 +172,17 @@ public class RSSignatureCaptureMainView extends LinearLayout implements OnClickL
 
       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
       Bitmap resizedBitmap = getResizedBitmap(this.signatureView.getSignature());
+      // Change background color to white and stroke color to black
+      int [] allPixels = new int [resizedBitmap.getHeight() * resizedBitmap.getWidth()];
+      resizedBitmap.getPixels(allPixels, 0, resizedBitmap.getWidth(), 0, 0, resizedBitmap.getWidth(), resizedBitmap.getHeight());
+      for(int i = 0; i < allPixels.length; i++) {
+        if(allPixels[i] == Color.BLACK || allPixels[i] == Color.TRANSPARENT) {
+          allPixels[i] = Color.WHITE;
+        }else {
+          allPixels[i] = Color.BLACK;
+        }
+      }
+      resizedBitmap.setPixels(allPixels, 0, resizedBitmap.getWidth(), 0, 0, resizedBitmap.getWidth(), resizedBitmap.getHeight());
       resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
 
 

@@ -211,8 +211,15 @@
 		}
 	}
 
-	// Convert UIImage object into NSData (a wrapper for a stream of bytes) formatted according to PNG spec
-	NSData *imageData = UIImagePNGRepresentation(signImage);
+    // Invert image to be black stroke on white background
+    CIFilter *filter = [CIFilter filterWithName:@"CIColorInvert"];
+    [filter setDefaults];
+    CIImage *cIImage = [ [CIImage alloc] initWithImage:signImage];
+    [filter setValue:cIImage forKey:@"inputImage"];
+    UIImage *outputImage = [[UIImage alloc] initWithCIImage:filter.outputImage];
+
+    // Convert UIImage object into NSData (a wrapper for a stream of bytes) formatted according to PNG spec
+    NSData *imageData = UIImagePNGRepresentation(outputImage);
 	BOOL isSuccess = [imageData writeToFile:tempPath atomically:YES];
 	if (isSuccess) {
 		NSFileManager *man = [NSFileManager defaultManager];

@@ -192,7 +192,12 @@
 -(void) saveImage {
 	saveButton.hidden = YES;
 	clearButton.hidden = YES;
-	UIImage *signImage = [self.sign signatureImage: _rotateClockwise withSquare:_square];
+	// Invert image to be black stroke on white background
+    self.sign.backgroundColor = [UIColor whiteColor];
+    self.sign.strokeColor = [UIColor blackColor];
+    UIImage *signImage = [self.sign signatureImage: _rotateClockwise withSquare:_square];
+    self.sign.backgroundColor = self.backgroundColor;
+    self.sign.strokeColor = self.strokeColor;
 
 	saveButton.hidden = NO;
 	clearButton.hidden = NO;
@@ -211,15 +216,8 @@
 		}
 	}
 
-    // Invert image to be black stroke on white background
-    CIFilter *filter = [CIFilter filterWithName:@"CIColorInvert"];
-    [filter setDefaults];
-    CIImage *cIImage = [ [CIImage alloc] initWithImage:signImage];
-    [filter setValue:cIImage forKey:@"inputImage"];
-    UIImage *outputImage = [[UIImage alloc] initWithCIImage:filter.outputImage];
-
     // Convert UIImage object into NSData (a wrapper for a stream of bytes) formatted according to PNG spec
-    NSData *imageData = UIImagePNGRepresentation(outputImage);
+    NSData *imageData = UIImagePNGRepresentation(signImage);
 	BOOL isSuccess = [imageData writeToFile:tempPath atomically:YES];
 	if (isSuccess) {
 		NSFileManager *man = [NSFileManager defaultManager];
